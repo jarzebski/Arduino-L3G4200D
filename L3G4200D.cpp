@@ -29,8 +29,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <L3G4200D.h>
 
-#define GYR_ADDRESS (0xD2 >> 1)
-
 boolean L3G4200D::begin(dps_t scale)
 {
     // Reset calibrate values
@@ -159,7 +157,7 @@ void L3G4200D::setThreshold(int multiple)
 
 void L3G4200D::writeReg(byte reg, byte value)
 {
-    Wire.beginTransmission(GYR_ADDRESS);
+    Wire.beginTransmission(L3G4200D_ADDRESS);
     #if ARDUINO >= 100
 	Wire.write(reg);
 	Wire.write(value);
@@ -173,7 +171,7 @@ void L3G4200D::writeReg(byte reg, byte value)
 byte L3G4200D::fastReg(byte reg)
 {
     byte value;
-    Wire.beginTransmission(GYR_ADDRESS);
+    Wire.beginTransmission(L3G4200D_ADDRESS);
     #if ARDUINO >= 100
 	Wire.write(reg);
 	Wire.endTransmission();
@@ -181,7 +179,7 @@ byte L3G4200D::fastReg(byte reg)
 	Wire.send(reg);
 	Wire.send(value);
     #endif
-    Wire.requestFrom(GYR_ADDRESS, 1);
+    Wire.requestFrom(L3G4200D_ADDRESS, 1);
     #if ARDUINO >= 100
 	value = Wire.read();
     #else
@@ -194,7 +192,7 @@ byte L3G4200D::fastReg(byte reg)
 byte L3G4200D::readReg(byte reg)
 {
     byte value;
-    Wire.beginTransmission(GYR_ADDRESS);
+    Wire.beginTransmission(L3G4200D_ADDRESS);
     #if ARDUINO >= 100
 	Wire.write(reg);
 	Wire.endTransmission();
@@ -202,7 +200,7 @@ byte L3G4200D::readReg(byte reg)
 	Wire.send(reg);
 	Wire.send(value);
     #endif
-    Wire.requestFrom(GYR_ADDRESS, 1);
+    Wire.requestFrom(L3G4200D_ADDRESS, 1);
     while(!Wire.available()) {};
     #if ARDUINO >= 100
 	value = Wire.read();
@@ -215,7 +213,7 @@ byte L3G4200D::readReg(byte reg)
 
 GyroscopeVector L3G4200D::readRaw()
 {
-    Wire.beginTransmission(GYR_ADDRESS);
+    Wire.beginTransmission(L3G4200D_ADDRESS);
 
     #if ARDUINO >= 100
 	Wire.write(L3G4200D_OUT_X_L | (1 << 7)); 
@@ -223,7 +221,7 @@ GyroscopeVector L3G4200D::readRaw()
 	Wire.send(L3G4200D_OUT_X_L | (1 << 7)); 
     #endif
     Wire.endTransmission();
-    Wire.requestFrom(GYR_ADDRESS, 6);
+    Wire.requestFrom(L3G4200D_ADDRESS, 6);
 
     while (Wire.available() < 6);
 
