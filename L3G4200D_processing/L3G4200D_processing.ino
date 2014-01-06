@@ -19,8 +19,6 @@ void setup()
   Serial.begin(9600);
   pinMode(LED, OUTPUT);
 
-  Wire.begin();
-
   // Initialize L3G4200D
   // 250 dps: L3G4200D_250DPS
   // 500 dps: L3G4200D_500DPS

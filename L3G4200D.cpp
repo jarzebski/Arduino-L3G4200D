@@ -43,6 +43,8 @@ boolean L3G4200D::begin(dps_t scale)
     t.ZAxis = 0;
     actualThreshold = 0;
 
+    Wire.begin();
+
     // Check L3G4200D Who Am I Register
     if (fastRegister8(L3G4200D_WHO_AM_I) != 0xD3)
     {
