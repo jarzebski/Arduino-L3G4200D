@@ -31,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define GYR_ADDRESS (0xD2 >> 1)
 
-boolean L3G4200D::begin(int scale)
+boolean L3G4200D::begin(dps_t scale)
 {
     // Reset calibrate values
     d.XAxis = 0;
@@ -61,32 +61,31 @@ boolean L3G4200D::begin(int scale)
     writeReg(L3G4200D_CTRL_REG3, 0x08);
 
     // Set full scale selection in continous mode
-    if (scale == L3G4200D_250DPS)
+    switch(scale)
     {
-	// 250 dps (0b00000000)
-	writeReg(L3G4200D_CTRL_REG4, 0x00);
-	dpsPerDigit = .00875f;
-    } else
-    if (scale == L3G4200D_500DPS)
-    {
-	// 500 dps (0b00010000)
-	writeReg(L3G4200D_CTRL_REG4, 0x10);
-	dpsPerDigit = .0175f;
-    } else
-    if (scale == L3G4200D_2000DPS)
-    {
-	// 2000 dps (0b00100000)
-	writeReg(L3G4200D_CTRL_REG4, 0x20);
-	dpsPerDigit = .07f;
-    } else
-    {
-	return false;
+	case L3G4200D_250DPS:
+	    dpsPerDigit = .00875f;
+	    break;
+	case L3G4200D_500DPS:
+	    dpsPerDigit = .0175f;
+	    break;
+	case L3G4200D_2000DPS:
+	    dpsPerDigit = .07f;
+	    break;
+	default:
+	    return false;
     }
+    writeReg(L3G4200D_CTRL_REG4, scale << 4);
 
     // Boot in normal mode, disable FIFO, HPF disabled (0b00000000) 
     writeReg(L3G4200D_CTRL_REG5, 0x00);
 
     return true;
+}
+
+dps_t L3G4200D::getScale(void)
+{
+    return (dps_t)((readReg(L3G4200D_CTRL_REG4) >> 4) & 0x03);
 }
 
 void L3G4200D::calibrate(int samples)
@@ -214,7 +213,7 @@ byte L3G4200D::readReg(byte reg)
     return value;
 }
 
-GyroscopeRaw L3G4200D::readRaw()
+GyroscopeVector L3G4200D::readRaw()
 {
     Wire.beginTransmission(GYR_ADDRESS);
 
@@ -251,7 +250,7 @@ GyroscopeRaw L3G4200D::readRaw()
     return r;
 }
 
-GyroscopeNormalize L3G4200D::readNormalize()
+GyroscopeVector L3G4200D::readNormalize()
 {
     readRaw();
 

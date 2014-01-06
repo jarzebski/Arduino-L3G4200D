@@ -50,7 +50,7 @@ void setup()
 
   // Set threshold sensivty. Default 3.
   // If you don't want use threshold, comment this line or set 0.
-  // gyroscope.setThreshold(3);
+  gyroscope.setThreshold(3);
 
   digitalWrite(LED, LOW);
   Blink = false;
@@ -59,7 +59,7 @@ void setup()
 void loop() 
 {
   // Read normalized values 
-  GyroscopeNormalize  norm = gyroscope.readNormalize();
+  GyroscopeVector norm = gyroscope.readNormalize();
 
   // Output
   Serial.print(norm.XAxis);

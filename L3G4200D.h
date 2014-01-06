@@ -29,10 +29,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <Arduino.h>
 
-#define L3G4200D_250DPS        0x00
-#define L3G4200D_500DPS        0x01
-#define L3G4200D_2000DPS       0x02
-
 #define L3G4200D_WHO_AM_I      0x0F
 
 #define L3G4200D_CTRL_REG1     0x20
@@ -64,50 +60,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define L3G4200D_INT1_THS_ZL   0x37
 #define L3G4200D_INT1_DURATION 0x38
 
-struct GyroscopeRaw
+struct GyroscopeVector
 {
     float XAxis;
     float YAxis;
     float ZAxis;
 };
 
-struct GyroscopeNormalize
+typedef enum
 {
-    float XAxis;
-    float YAxis;
-    float ZAxis;
-};
-
-
-struct GyroscopeThreshold
-{
-    float XAxis;
-    float YAxis;
-    float ZAxis;
-};
-
-struct GyroscopeDelta
-{
-    float XAxis;
-    float YAxis;
-    float ZAxis;
-};
+    L3G4200D_2000DPS = 0b10,
+    L3G4200D_500DPS = 0b01,
+    L3G4200D_250DPS = 0b00
+} dps_t;
 
 class L3G4200D
 {
     public:
-	boolean begin(int scale = L3G4200D_500DPS);
+	boolean begin(dps_t scale = L3G4200D_2000DPS);
+	dps_t getScale(void);
 	void calibrate(int samples = 50);
 	void setThreshold(int multiple = 0);
 
-	GyroscopeRaw readRaw(void);
-	GyroscopeNormalize readNormalize();
+	GyroscopeVector readRaw(void);
+	GyroscopeVector readNormalize();
 
     private:
-	GyroscopeRaw r;
-	GyroscopeNormalize n;
-	GyroscopeDelta d;
-	GyroscopeThreshold t;
+	GyroscopeVector r;
+	GyroscopeVector n;
+	GyroscopeVector d;
+	GyroscopeVector t;
 
 	boolean useCalibrate;
 	float actualThreshold;
