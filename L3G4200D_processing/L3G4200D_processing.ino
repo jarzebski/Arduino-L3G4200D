@@ -59,7 +59,7 @@ void setup()
 void loop() 
 {
   // Read normalized values 
-  GyroscopeVector norm = gyroscope.readNormalize();
+  Vector norm = gyroscope.readNormalize();
 
   // Output
   Serial.print(norm.XAxis);

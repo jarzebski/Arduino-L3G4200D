@@ -1,7 +1,7 @@
 /*
 L3G4200D.cpp - Class file for the L3G4200D Triple Axis Gyroscope Arduino Library.
 
-Version: 1.1.0
+Version: 1.2.0
 (c) 2014 Korneliusz Jarzebski
 www.jarzebski.pl
 
@@ -44,19 +44,19 @@ boolean L3G4200D::begin(dps_t scale)
     actualThreshold = 0;
 
     // Check L3G4200D Who Am I Register
-    if (fastReg(L3G4200D_WHO_AM_I) != 0xD3)
+    if (fastRegister8(L3G4200D_WHO_AM_I) != 0xD3)
     {
 	return false;
     }
 
     // Enable all axis and setup normal mode (0b00001111)
-    writeReg(L3G4200D_CTRL_REG1, 0x0F);
+    writeRegister8(L3G4200D_CTRL_REG1, 0x0F);
 
     // Disable high pass filter (0b00000000)
-    writeReg(L3G4200D_CTRL_REG2, 0x00);
+    writeRegister8(L3G4200D_CTRL_REG2, 0x00);
 
     // Generata data ready interrupt on INT2 (0b00001000)
-    writeReg(L3G4200D_CTRL_REG3, 0x08);
+    writeRegister8(L3G4200D_CTRL_REG3, 0x08);
 
     // Set full scale selection in continous mode
     switch(scale)
@@ -73,20 +73,20 @@ boolean L3G4200D::begin(dps_t scale)
 	default:
 	    return false;
     }
-    writeReg(L3G4200D_CTRL_REG4, scale << 4);
+    writeRegister8(L3G4200D_CTRL_REG4, scale << 4);
 
     // Boot in normal mode, disable FIFO, HPF disabled (0b00000000) 
-    writeReg(L3G4200D_CTRL_REG5, 0x00);
+    writeRegister8(L3G4200D_CTRL_REG5, 0x00);
 
     return true;
 }
 
 dps_t L3G4200D::getScale(void)
 {
-    return (dps_t)((readReg(L3G4200D_CTRL_REG4) >> 4) & 0x03);
+    return (dps_t)((readRegister8(L3G4200D_CTRL_REG4) >> 4) & 0x03);
 }
 
-void L3G4200D::calibrate(int samples)
+void L3G4200D::calibrate(uint8_t samples)
 {
     // Set calibrate
     useCalibrate = true;
@@ -100,7 +100,7 @@ void L3G4200D::calibrate(int samples)
     float sigmaZ = 0;
 
     // Read n-samples
-    for (int i = 0; i < samples; ++i)
+    for (uint8_t i = 0; i < samples; ++i)
     {
 	readRaw();
 	sumX += r.XAxis;
@@ -129,7 +129,7 @@ void L3G4200D::calibrate(int samples)
     }
 }
 
-void L3G4200D::setThreshold(int multiple)
+void L3G4200D::setThreshold(uint8_t multiple)
 {
     if (multiple > 0)
     {
@@ -155,7 +155,7 @@ void L3G4200D::setThreshold(int multiple)
     actualThreshold = multiple;
 }
 
-void L3G4200D::writeReg(byte reg, byte value)
+void L3G4200D::writeRegister8(uint8_t reg, uint8_t value)
 {
     Wire.beginTransmission(L3G4200D_ADDRESS);
     #if ARDUINO >= 100
@@ -168,17 +168,19 @@ void L3G4200D::writeReg(byte reg, byte value)
     Wire.endTransmission();
 }
 
-byte L3G4200D::fastReg(byte reg)
+uint8_t L3G4200D::fastRegister8(uint8_t reg)
 {
-    byte value;
+    uint8_t value;
+    
     Wire.beginTransmission(L3G4200D_ADDRESS);
     #if ARDUINO >= 100
 	Wire.write(reg);
-	Wire.endTransmission();
     #else
 	Wire.send(reg);
-	Wire.send(value);
     #endif
+    Wire.endTransmission();
+    
+    Wire.beginTransmission(L3G4200D_ADDRESS);
     Wire.requestFrom(L3G4200D_ADDRESS, 1);
     #if ARDUINO >= 100
 	value = Wire.read();
@@ -186,20 +188,23 @@ byte L3G4200D::fastReg(byte reg)
 	value = Wire.receive();
     #endif;
     Wire.endTransmission();
+
     return value;
 }
 
-byte L3G4200D::readReg(byte reg)
+uint8_t L3G4200D::readRegister8(uint8_t reg)
 {
-    byte value;
+    uint8_t value;
+    
     Wire.beginTransmission(L3G4200D_ADDRESS);
     #if ARDUINO >= 100
 	Wire.write(reg);
-	Wire.endTransmission();
     #else
 	Wire.send(reg);
-	Wire.send(value);
     #endif
+    Wire.endTransmission();
+    
+    Wire.beginTransmission(L3G4200D_ADDRESS);
     Wire.requestFrom(L3G4200D_ADDRESS, 1);
     while(!Wire.available()) {};
     #if ARDUINO >= 100
@@ -208,13 +213,13 @@ byte L3G4200D::readReg(byte reg)
 	value = Wire.receive();
     #endif;
     Wire.endTransmission();
+
     return value;
 }
 
-GyroscopeVector L3G4200D::readRaw()
+Vector L3G4200D::readRaw()
 {
     Wire.beginTransmission(L3G4200D_ADDRESS);
-
     #if ARDUINO >= 100
 	Wire.write(L3G4200D_OUT_X_L | (1 << 7)); 
     #else
@@ -248,7 +253,7 @@ GyroscopeVector L3G4200D::readRaw()
     return r;
 }
 
-GyroscopeVector L3G4200D::readNormalize()
+Vector L3G4200D::readNormalize()
 {
     readRaw();
 

@@ -57,10 +57,10 @@ void setup()
 void loop()
 {
   // Read normalized values
-  GyroscopeVector raw = gyroscope.readRaw();
+  Vector raw = gyroscope.readRaw();
 
   // Read normalized values
-  GyroscopeVector norm = gyroscope.readNormalize();
+  Vector norm = gyroscope.readNormalize();
 
   // Output raw
   Serial.print(" Xraw = ");

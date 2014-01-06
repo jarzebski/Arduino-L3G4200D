@@ -1,13 +1,19 @@
+L3G4200D Arduino Library 1.2.0 / 07.01.2014
+======================================================================
+
+ * More clean up code & standardize data types
+ * Fixing I2c communication
+
 L3G4200D Arduino Library 1.1.0 / 06.01.2014
-===========================================
+======================================================================
 
  * Support for Arduino < 1.0 and >= 1.0
  * Check WHO_AM_I register during initialization
- * Blinkink LED13 indicator for processing example
+ * Blinking LED13 indicator for processing example
  * Waiting for initialization in examples
- * Cleans up code
+ * Clean up code
 
 L3G4200D Arduino Library 1.0.0 / 05.01.2014
-===========================================
+======================================================================
 
  * First release
