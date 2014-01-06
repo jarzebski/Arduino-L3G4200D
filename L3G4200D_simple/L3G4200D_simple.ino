@@ -1,6 +1,5 @@
 /*
     L3G4200D Gyroscope
-    Version 1.0
     Read more: http://www.jarzebski.pl/arduino/czujniki-i-sensory/3-osiowy-zyroskop-l3g4200d.html
 
     Web: http://www.jarzebski.pl
@@ -22,16 +21,20 @@ void setup()
   // 250 dps: L3G4200D_250DPS
   // 500 dps: L3G4200D_500DPS
   // 2000 dps: L3G4200D_2000DPS
-  if (gyroscope.begin(L3G4200D_2000DPS))
+  while(!gyroscope.begin(L3G4200D_2000DPS))
   {
-    // Calibrate gyroscope. The calibration must be at rest.
-    // If you don't want calibrate, comment this line.
-    gyroscope.calibrate();
-
-    // Set threshold sensivty. Default 3.
-    // If you don't want use threshold, comment this line or set 0.
-    gyroscope.setThreshold(3);
+    Serial.println("Could not find a valid L3G4200D sensor, check wiring!");
+    delay(500);
   }
+
+  // Calibrate gyroscope. The calibration must be at rest.
+  // If you don't want calibrate, comment this line.
+  gyroscope.calibrate();
+
+  // Set threshold sensivty. Default 3.
+  // If you don't want use threshold, comment this line or set 0.
+
+  gyroscope.setThreshold(3);
 }
 
 void loop() 

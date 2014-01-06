@@ -1,6 +1,5 @@
 /*
     L3G4200D Gyroscope Processing
-    Version 1.0
     Read more: http://www.jarzebski.pl/arduino/czujniki-i-sensory/3-osiowy-zyroskop-l3g4200d.html
 
     Web: http://www.jarzebski.pl

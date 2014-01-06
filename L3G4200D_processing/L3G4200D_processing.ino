@@ -1,6 +1,5 @@
 /*
     L3G4200D example for processing
-    Version 1.0
     Read more: http://www.jarzebski.pl/arduino/czujniki-i-sensory/3-osiowy-zyroskop-l3g4200d.html
 
     Web: http://www.jarzebski.pl
@@ -12,9 +11,13 @@
 
 L3G4200D gyroscope;
 
+int LED = 13;
+boolean Blink = false;
+
 void setup() 
 {
   Serial.begin(9600);
+  pinMode(LED, OUTPUT);
 
   Wire.begin();
 
@@ -22,16 +25,35 @@ void setup()
   // 250 dps: L3G4200D_250DPS
   // 500 dps: L3G4200D_500DPS
   // 2000 dps: L3G4200D_2000DPS
-  if (gyroscope.begin(L3G4200D_2000DPS))
+  while (!gyroscope.begin(L3G4200D_2000DPS))
   {
-    // Calibrate gyroscope. The calibration must be at rest.
-    // If you don't want calibrate, comment this line.
-    gyroscope.calibrate();
+    // Waiting for initialization
 
-    // Set threshold sensivty. Default 3.
-    // If you don't want use threshold, comment this line or set 0.
-    gyroscope.setThreshold(3);
+    if (Blink)
+    {
+      digitalWrite(LED, HIGH);
+    } else
+    {
+      digitalWrite(LED, LOW);
+    }
+
+    Blink = !Blink;
+
+    delay(500);
   }
+
+  digitalWrite(LED, HIGH);
+
+  // Calibrate gyroscope. The calibration must be at rest.
+  // If you don't want calibrate, comment this line.
+  gyroscope.calibrate();
+
+  // Set threshold sensivty. Default 3.
+  // If you don't want use threshold, comment this line or set 0.
+  // gyroscope.setThreshold(3);
+
+  digitalWrite(LED, LOW);
+  Blink = false;
 }
 
 void loop() 
@@ -46,4 +68,15 @@ void loop()
   Serial.print(":");
   Serial.print(norm.ZAxis);
   Serial.println();
+
+  // Output indicator
+  if (Blink)
+  {
+    digitalWrite(LED, HIGH);
+  } else
+  {
+    digitalWrite(LED, LOW);
+  }
+
+  Blink = !Blink;
 }
