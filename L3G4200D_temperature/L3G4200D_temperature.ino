@@ -31,7 +31,7 @@ void loop()
 
   // Output
   Serial.print(" Temp = ");
-  Serial.print(temp2);
+  Serial.print(temp);
   Serial.println();
 
   delay(500);
