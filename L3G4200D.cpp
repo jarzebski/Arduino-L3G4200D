@@ -219,6 +219,11 @@ uint8_t L3G4200D::readRegister8(uint8_t reg)
     return value;
 }
 
+uint8_t L3G4200D::readTemperature(void)
+{
+    return readRegister8(L3G4200D_OUT_TEMP);
+}
+
 Vector L3G4200D::readRaw()
 {
     Wire.beginTransmission(L3G4200D_ADDRESS);

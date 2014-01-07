@@ -86,6 +86,7 @@ class L3G4200D
 
 	Vector readRaw(void);
 	Vector readNormalize();
+	uint8_t readTemperature(void);
 
     private:
 	Vector r;
