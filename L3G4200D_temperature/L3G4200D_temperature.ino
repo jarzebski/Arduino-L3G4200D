@@ -26,7 +26,13 @@ void setup()
 
 void loop()
 {
-  // Read temperature
+  // Read temperature.
+  // L3G4200D Temperature sensor output change vs temperature: -1digit/degrCelsius (data representation: 2's complement).
+  // Value represents difference respect to a reference not specified value.
+  // So temperature sensor can be used to measure temperature variations: temperarture sensor isn't suitable to return absolute temperatures measures.
+  // If you run two sequential measures and differentiate them you can get temperature variation.
+  // This also means that two devices in the same temp conditions can return different outputs.
+  // Finally, you can use this info to compensate drifts due to temperature changes.
   int temp = gyroscope.readTemperature();
 
   // Output
