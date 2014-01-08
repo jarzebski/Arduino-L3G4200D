@@ -173,7 +173,7 @@ void L3G4200D::writeRegister8(uint8_t reg, uint8_t value)
 uint8_t L3G4200D::fastRegister8(uint8_t reg)
 {
     uint8_t value;
-    
+
     Wire.beginTransmission(L3G4200D_ADDRESS);
     #if ARDUINO >= 100
 	Wire.write(reg);
@@ -181,7 +181,7 @@ uint8_t L3G4200D::fastRegister8(uint8_t reg)
 	Wire.send(reg);
     #endif
     Wire.endTransmission();
-    
+
     Wire.beginTransmission(L3G4200D_ADDRESS);
     Wire.requestFrom(L3G4200D_ADDRESS, 1);
     #if ARDUINO >= 100
@@ -197,7 +197,7 @@ uint8_t L3G4200D::fastRegister8(uint8_t reg)
 uint8_t L3G4200D::readRegister8(uint8_t reg)
 {
     uint8_t value;
-    
+
     Wire.beginTransmission(L3G4200D_ADDRESS);
     #if ARDUINO >= 100
 	Wire.write(reg);
@@ -205,7 +205,7 @@ uint8_t L3G4200D::readRegister8(uint8_t reg)
 	Wire.send(reg);
     #endif
     Wire.endTransmission();
-    
+
     Wire.beginTransmission(L3G4200D_ADDRESS);
     Wire.requestFrom(L3G4200D_ADDRESS, 1);
     while(!Wire.available()) {};
@@ -219,6 +219,12 @@ uint8_t L3G4200D::readRegister8(uint8_t reg)
     return value;
 }
 
+// L3G4200D Temperature sensor output change vs temperature: -1digit/degrCelsius (data representation: 2's complement).
+// Value represents difference respect to a reference not specified value.
+// So temperature sensor can be used to measure temperature variations: temperarture sensor isn't suitable to return absolute temperatures measures.
+// If you run two sequential measures and differentiate them you can get temperature variation.
+// This also means that two devices in the same temp conditions can return different outputs.
+// Finally, you can use this info to compensate drifts due to temperature changes.
 uint8_t L3G4200D::readTemperature(void)
 {
     return readRegister8(L3G4200D_OUT_TEMP);
