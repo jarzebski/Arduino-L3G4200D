@@ -1,7 +1,7 @@
 /*
 L3G4200D.cpp - Class file for the L3G4200D Triple Axis Gyroscope Arduino Library.
 
-Version: 1.2.0
+Version: 1.3.0
 (c) 2014 Korneliusz Jarzebski
 www.jarzebski.pl
 
@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <L3G4200D.h>
 
-boolean L3G4200D::begin(dps_t scale)
+boolean L3G4200D::begin(dps_t scale, odrbw_t odrbw)
 {
     // Reset calibrate values
     d.XAxis = 0;
@@ -51,16 +51,21 @@ boolean L3G4200D::begin(dps_t scale)
 	return false;
     }
 
-    // Enable all axis and setup normal mode (0b00001111)
-    writeRegister8(L3G4200D_CTRL_REG1, 0x0F);
+    // Enable all axis and setup normal mode + Output Data Range & Bandwidth
+    uint8_t reg1 = 0x00;
+    reg1 |= 0x0F; // Enable all axis and setup normal mode
+    reg1 |= (odrbw << 4); // Set output data rate & bandwidh
+    writeRegister8(L3G4200D_CTRL_REG1, reg1);
 
-    // Disable high pass filter (0b00000000)
+    // Disable high pass filter
     writeRegister8(L3G4200D_CTRL_REG2, 0x00);
 
-    // Generata data ready interrupt on INT2 (0b00001000)
+    // Generata data ready interrupt on INT2
     writeRegister8(L3G4200D_CTRL_REG3, 0x08);
 
     // Set full scale selection in continous mode
+    writeRegister8(L3G4200D_CTRL_REG4, scale << 4);
+
     switch(scale)
     {
 	case L3G4200D_250DPS:
@@ -73,11 +78,10 @@ boolean L3G4200D::begin(dps_t scale)
 	    dpsPerDigit = .07f;
 	    break;
 	default:
-	    return false;
+	    break;
     }
-    writeRegister8(L3G4200D_CTRL_REG4, scale << 4);
 
-    // Boot in normal mode, disable FIFO, HPF disabled (0b00000000) 
+    // Boot in normal mode, disable FIFO, HPF disabled
     writeRegister8(L3G4200D_CTRL_REG5, 0x00);
 
     return true;
@@ -86,6 +90,12 @@ boolean L3G4200D::begin(dps_t scale)
 dps_t L3G4200D::getScale(void)
 {
     return (dps_t)((readRegister8(L3G4200D_CTRL_REG4) >> 4) & 0x03);
+}
+
+
+odrbw_t L3G4200D::getOdrBw(void)
+{
+    return (odrbw_t)((readRegister8(L3G4200D_CTRL_REG1) >> 4) & 0x0F);
 }
 
 void L3G4200D::calibrate(uint8_t samples)
@@ -112,6 +122,8 @@ void L3G4200D::calibrate(uint8_t samples)
 	sigmaX += r.XAxis * r.XAxis;
 	sigmaY += r.YAxis * r.YAxis;
 	sigmaZ += r.ZAxis * r.ZAxis;
+	
+	delay(5);
     }
 
     // Calculate delta vectors
@@ -129,6 +141,11 @@ void L3G4200D::calibrate(uint8_t samples)
     {
 	setThreshold(actualThreshold);
     }
+}
+
+uint8_t L3G4200D::getThreshold(void)
+{
+    return actualThreshold;
 }
 
 void L3G4200D::setThreshold(uint8_t multiple)

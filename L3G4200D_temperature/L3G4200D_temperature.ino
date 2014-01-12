@@ -1,7 +1,7 @@
 /*
-    L3G4200D Gyroscope
+    L3G4200D Triple Axis Gyroscope. Read temperature.
     Read more: http://www.jarzebski.pl/arduino/czujniki-i-sensory/3-osiowy-zyroskop-l3g4200d.html
-
+    GIT: https://github.com/jarzebski/Arduino-L3G4200D
     Web: http://www.jarzebski.pl
     (c) 2014 by Korneliusz Jarzebski
 */
@@ -17,6 +17,7 @@ void setup()
 
   Serial.println("Initialize L3G4200D");
 
+  // Initialize L3G4200D
   while(!gyroscope.begin())
   {
     Serial.println("Could not find a valid L3G4200D sensor, check wiring!");

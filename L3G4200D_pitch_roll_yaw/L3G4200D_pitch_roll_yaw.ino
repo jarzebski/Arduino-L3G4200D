@@ -1,5 +1,5 @@
 /*
-    L3G4200D Triple Axis Gyroscope: Output for L3G4200D_processing_pry.pde
+    L3G4200D Triple Axis Gyroscope: Pitch, Roll and Yaw.
     Read more: http://www.jarzebski.pl/arduino/czujniki-i-sensory/3-osiowy-zyroskop-l3g4200d.html
     GIT: https://github.com/jarzebski/Arduino-L3G4200D
     Web: http://www.jarzebski.pl
@@ -20,39 +20,23 @@ float pitch = 0;
 float roll = 0;
 float yaw = 0;
 
-int LED = 13;
-boolean Blink = false;
-
 void setup() 
 {
   Serial.begin(115200);
 
   // Initialize L3G4200D
+  Serial.println("Initialize L3G4200D");
+
   // Set scale 2000 dps and 400HZ Output data rate (cut-off 50)
-  while (!gyroscope.begin(L3G4200D_2000DPS, L3G4200D_400HZ_50))
+  while(!gyroscope.begin(L3G4200D_2000DPS, L3G4200D_400HZ_50))
   {
-    // Waiting for initialization
-
-    if (Blink)
-    {
-      digitalWrite(LED, HIGH);
-    } else
-    {
-      digitalWrite(LED, LOW);
-    }
-
-    Blink = !Blink;
-
+    Serial.println("Could not find a valid L3G4200D sensor, check wiring!");
     delay(500);
   }
-
-  digitalWrite(LED, HIGH);
-
+ 
   // Calibrate gyroscope. The calibration must be at rest.
   // If you don't want calibrate, comment this line.
   gyroscope.calibrate(100);
-
-  digitalWrite(LED, LOW);
 }
 
 void loop()
@@ -68,28 +52,12 @@ void loop()
   yaw = yaw + norm.ZAxis * timeStep;
 
   // Output raw
-  Serial.print(norm.XAxis);
-  Serial.print(":");
-  Serial.print(norm.YAxis);
-  Serial.print(":");
-  Serial.print(norm.ZAxis);
-  Serial.print(":");
+  Serial.print(" Pitch = ");
   Serial.print(pitch);
-  Serial.print(":");
-  Serial.print(roll);
-  Serial.print(":");
+  Serial.print(" Roll = ");
+  Serial.print(roll);  
+  Serial.print(" Yaw = ");
   Serial.println(yaw);
-
-  // Output indicator
-  if (Blink)
-  {
-    digitalWrite(LED, HIGH);
-  } else
-  {
-    digitalWrite(LED, LOW);
-  }
-
-  Blink = !Blink;
 
   // Wait to full timeStep period
   delay((timeStep*1000) - (millis() - timer));
