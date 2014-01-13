@@ -141,7 +141,7 @@ void drawRotationCube(int x, int y)
   pgRotationCube.lights();
   pgRotationCube.background(0);
   pgRotationCube.translate(pgRotationCube.width/2, pgRotationCube.width/2, -pgRotationCube.width+30); 
-  pgRotationCube.rotateX(radians(-pyrValues[0][actualSample-1]));
+  pgRotationCube.rotateX(radians(pyrValues[0][actualSample-1]));
   pgRotationCube.rotateZ(radians(pyrValues[1][actualSample-1])); 
   pgRotationCube.rotateY(radians(pyrValues[2][actualSample-1]));
   pgRotationCube.fill(150);
@@ -165,7 +165,7 @@ void initArtificialHorizon()
 
 float getArtificialHorizon(float pitch)
 {
-  return sin(pitch)*ahRadius;
+  return -sin(pitch)*ahRadius;
 }
 
 void drawScale(float offset, float scaleWidth)
@@ -173,7 +173,7 @@ void drawScale(float offset, float scaleWidth)
   float horizon;
   
   // Ground side
-  horizon = getArtificialHorizon(radians(pyrValues[0][actualSample-1]) + offset * PI / 180);
+  horizon = getArtificialHorizon(radians(pyrValues[0][actualSample-1]) - offset * PI / 180);
   pgArtificialHorizon.noFill();  
   pgArtificialHorizon.beginShape();
   pgArtificialHorizon.vertex(ahRadius, 0);
@@ -184,7 +184,7 @@ void drawScale(float offset, float scaleWidth)
   pgArtificialHorizon.endShape();  
 
   // Sky side
-  horizon = getArtificialHorizon(radians(pyrValues[0][actualSample-1]) - offset * PI / 180);
+  horizon = getArtificialHorizon(radians(pyrValues[0][actualSample-1]) + offset * PI / 180);
   pgArtificialHorizon.noFill();  
   pgArtificialHorizon.beginShape();
   pgArtificialHorizon.vertex(ahRadius, 0);

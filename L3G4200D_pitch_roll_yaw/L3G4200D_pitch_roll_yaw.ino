@@ -47,8 +47,8 @@ void loop()
   Vector norm = gyroscope.readNormalize();
 
   // Calculate Pitch, Roll and Yaw
-  pitch = pitch + norm.XAxis * timeStep;
-  roll = roll + norm.YAxis * timeStep;
+  pitch = pitch + norm.YAxis * timeStep;
+  roll = roll + norm.XAxis * timeStep;
   yaw = yaw + norm.ZAxis * timeStep;
 
   // Output raw
