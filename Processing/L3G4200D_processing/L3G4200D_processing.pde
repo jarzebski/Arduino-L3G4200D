@@ -43,7 +43,7 @@ int ahRadius = 0;
 float ahKappa = 0.5522847498;
 float ahRadiusKappa = 0;
 
-void setup ()
+void setup()
 {
   size(755, 550, P2D);
   background(0);
@@ -57,10 +57,10 @@ void setup ()
   myPort.bufferUntil(10);
 }
 
-void drawChart(String title, String[] series, float[][] chart, int x, int y, int h, int min, int max, int step) 
+void drawChart(String title, String[] series, float[][] chart, int x, int y, int h, int min, int max, int step)
 {
   int actualColor = 0;
- 
+
   pgChart = createGraphics((maxSamples*sampleStep)+50, h+60);
 
   pgChart.beginDraw();
@@ -85,8 +85,8 @@ void drawChart(String title, String[] series, float[][] chart, int x, int y, int
      DescriptionWidth[j] += textWidth(Description[j]+"+000.00");
      Description[j] += nf(chart[j][actualSample-1], 0, 2)+"  ";
      DesctiptionTotalWidth += DescriptionWidth[j];
-  }  
-    
+  }
+
   actualColor = 0;
 
   for (int j = 0; j < chart.length; j++)
@@ -97,7 +97,7 @@ void drawChart(String title, String[] series, float[][] chart, int x, int y, int
     actualColor++;
     if (actualColor >= colors.length) actualColor = 0;
   }
-  
+
   // Draw H-Lines 
   pgChart.stroke(100);
 
@@ -112,7 +112,7 @@ void drawChart(String title, String[] series, float[][] chart, int x, int y, int
 
   // Draw data series
   pgChart.strokeWeight(2);
-  
+
   for (int i = 1; i < actualSample; i++)
   {
     actualColor = 0;
@@ -120,7 +120,7 @@ void drawChart(String title, String[] series, float[][] chart, int x, int y, int
     for (int j = 0; j < chart.length; j++)
     {
       pgChart.stroke(colors[actualColor]);
-      
+
       float d0 = chart[j][i-1];
       float d1 = chart[j][i];
 
@@ -128,7 +128,7 @@ void drawChart(String title, String[] series, float[][] chart, int x, int y, int
       if (d0 > max) d0 = max;
       if (d1 < min) d1 = min;
       if (d1 > max) d1 = max;
-      
+
       float v0 = map(d0, min, max, 0, h);
       float v1 = map(d1,   min, max, 0, h);
 
@@ -137,17 +137,17 @@ void drawChart(String title, String[] series, float[][] chart, int x, int y, int
       actualColor++;
 
       if (actualColor >= colors.length) actualColor = 0;
-    }  
+    }
   }
 
   pgChart.endDraw();
-  
-  image(pgChart, x, y);  
+
+  image(pgChart, x, y);
 }
 
 void initRotationCube()
 {
-  pgRotationCube = createGraphics(250, 250, P3D);  
+  pgRotationCube = createGraphics(250, 250, P3D);
 }
 
 void drawRotationCube(int x, int y)
@@ -155,14 +155,14 @@ void drawRotationCube(int x, int y)
   pgRotationCube.beginDraw();
   pgRotationCube.lights();
   pgRotationCube.background(0);
-  pgRotationCube.translate(pgRotationCube.width/2, pgRotationCube.width/2, -pgRotationCube.width+30); 
+  pgRotationCube.translate(pgRotationCube.width/2, pgRotationCube.width/2, -pgRotationCube.width+30);
   pgRotationCube.rotateX(radians(pyrValues[0][actualSample-1]));
   pgRotationCube.rotateZ(radians(pyrValues[1][actualSample-1])); 
   pgRotationCube.rotateY(radians(pyrValues[2][actualSample-1]));
   pgRotationCube.fill(150, 150, 200);
   pgRotationCube.box(pgRotationCube.width);
   pgRotationCube.endDraw();
-  image(pgRotationCube, x, y);  
+  image(pgRotationCube, x, y);
 }
 
 void initArtificialHorizon()
@@ -173,7 +173,7 @@ void initArtificialHorizon()
   ahHeight = imgArtificialHorizon.height - 20;
   ahDiameter = min(ahWidth, ahHeight);
   ahRadius =  ahDiameter / 2;
-  ahRadiusKappa = ahRadius * ahKappa;  
+  ahRadiusKappa = ahRadius * ahKappa;
 }
 
 float getArtificialHorizon(float pitch)
@@ -187,48 +187,48 @@ void drawScale(float offset)
 
   // Ground side
   horizon = getArtificialHorizon(radians(pyrValues[0][actualSample-1]) - offset * PI / 180);
-  pgArtificialHorizon.noFill();  
+  pgArtificialHorizon.noFill();
   pgArtificialHorizon.beginShape();
   pgArtificialHorizon.vertex(ahRadius, 0);
-  pgArtificialHorizon.stroke(255);   
-  pgArtificialHorizon.strokeWeight(2);  
+  pgArtificialHorizon.stroke(255);
+  pgArtificialHorizon.strokeWeight(2);
   pgArtificialHorizon.bezierVertex(ahRadius, horizon * ahKappa, ahRadiusKappa, horizon, 0, horizon);
   pgArtificialHorizon.bezierVertex(-ahRadiusKappa, horizon, -ahRadius, horizon * ahKappa, -ahRadius, 0);
-  pgArtificialHorizon.endShape();  
+  pgArtificialHorizon.endShape();
 
   // Sky side
   horizon = getArtificialHorizon(radians(pyrValues[0][actualSample-1]) + offset * PI / 180);
-  pgArtificialHorizon.noFill();  
+  pgArtificialHorizon.noFill();
   pgArtificialHorizon.beginShape();
   pgArtificialHorizon.vertex(ahRadius, 0);
-  pgArtificialHorizon.stroke(0);  
-  pgArtificialHorizon.strokeWeight(2);  
+  pgArtificialHorizon.stroke(0);
+  pgArtificialHorizon.strokeWeight(2);
   pgArtificialHorizon.bezierVertex(ahRadius, horizon * ahKappa, ahRadiusKappa, horizon, 0, horizon);
   pgArtificialHorizon.bezierVertex( -ahRadiusKappa, horizon, -ahRadius, horizon * ahKappa, -ahRadius, 0);
-  pgArtificialHorizon.endShape();  
+  pgArtificialHorizon.endShape();
 }
 
 void drawArtificialHorizon(int x, int y)
 {
   pgArtificialHorizon = createGraphics(ahWidth, ahHeight);
   pgArtificialHorizonRing = createGraphics(ahWidth+20, ahHeight+20);
-  
+
   float horizon = getArtificialHorizon(radians(pyrValues[0][actualSample-1]));
 
   pgArtificialHorizon.beginDraw();
-  
+
   // Ground
   pgArtificialHorizon.translate(ahRadius, ahRadius);
   pgArtificialHorizon.rotate(radians(-pyrValues[1][actualSample-1]));
-  pgArtificialHorizon.strokeWeight(0); 
+  pgArtificialHorizon.strokeWeight(0);
   pgArtificialHorizon.fill(40, 40, 40);
   pgArtificialHorizon.arc(0.0, 0.0, ahDiameter, ahDiameter, 0, 2 * PI);
-  
+
   // Sky
   pgArtificialHorizon.beginShape();
   pgArtificialHorizon.fill(200, 200, 250);
-  pgArtificialHorizon.strokeWeight(2);  
-  pgArtificialHorizon.stroke(255);  
+  pgArtificialHorizon.strokeWeight(2);
+  pgArtificialHorizon.stroke(255);
   pgArtificialHorizon.vertex(-ahRadius, 0);
   pgArtificialHorizon.bezierVertex(-ahRadius, -ahRadius-20, ahRadius, -ahRadius-20, ahRadius, 0);
   pgArtificialHorizon.bezierVertex(ahRadius, horizon * ahKappa, ahRadiusKappa, horizon, 0, horizon);
@@ -242,12 +242,12 @@ void drawArtificialHorizon(int x, int y)
   drawScale(30);
   drawScale(20);
   drawScale(10);
-   
+
   pgArtificialHorizon.endDraw();
 
-  image(pgArtificialHorizon, x+10, y+10);  
+  image(pgArtificialHorizon, x+10, y+10);
   image(imgArtificialHorizon, x, y);
-  
+
   // Draw ring
   pgArtificialHorizonRing.beginDraw();
   pgArtificialHorizonRing.clear();
@@ -255,25 +255,25 @@ void drawArtificialHorizon(int x, int y)
   pgArtificialHorizonRing.rotate(radians(pyrValues[1][actualSample-1]));
   pgArtificialHorizonRing.image(imgArtificialHorizonRing, -130, -130);
   pgArtificialHorizonRing.endDraw();
-  image(pgArtificialHorizonRing, x, y);  
+  image(pgArtificialHorizonRing, x, y);
 }
 
-void draw() 
+void draw()
 {
   if (!hasData) return;
-  
-  drawChart("Gyroscope rad/sec", gyroscopeSeries, gyroscopeValues, 10, 10, 200, -10, 10, 5); 
-  drawChart("Gyroscope deg", pyrSeries, pyrValues, 10, 280, 200, -180, 180, 30); 
+
+  drawChart("Gyroscope rad/sec", gyroscopeSeries, gyroscopeValues, 10, 10, 200, -10, 10, 5);
+  drawChart("Gyroscope deg", pyrSeries, pyrValues, 10, 280, 200, -180, 180, 30);
   drawRotationCube(480, 15);
   drawArtificialHorizon(480, 280);
 }
- 
+
 void nextSample(float[][] chart)
 {
     for (int j = 0; j < chart.length; j++)
     {
       float last = chart[j][maxSamples-1];
-      
+
       for (int i = 1; i < maxSamples; i++)
       {
         chart[j][i-1] = chart[j][i];
@@ -299,7 +299,7 @@ void serialEvent (Serial myPort)
     {
       gyroscopeValues[j][actualSample] = (float(list[j]) / 57.2957795);
     }
-    
+
     for (int j = 0; j < pyrValues.length; j++)
     {
       pyrValues[j][actualSample] = (float(list[j+3]));
@@ -313,7 +313,7 @@ void serialEvent (Serial myPort)
     if (actualSample == (maxSamples-1))
     {
       nextSample(gyroscopeValues);
-      nextSample(pyrValues);    
+      nextSample(pyrValues);
     } else
     {
       actualSample++;

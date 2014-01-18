@@ -72,8 +72,8 @@ struct Vector
 typedef enum
 {
     L3G4200D_2000DPS = 0b10,
-    L3G4200D_500DPS = 0b01,
-    L3G4200D_250DPS = 0b00
+    L3G4200D_500DPS  = 0b01,
+    L3G4200D_250DPS  = 0b00
 } dps_t;
 
 typedef enum

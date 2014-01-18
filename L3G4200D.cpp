@@ -87,17 +87,20 @@ boolean L3G4200D::begin(dps_t scale, odrbw_t odrbw)
     return true;
 }
 
+// Get current scale
 dps_t L3G4200D::getScale(void)
 {
     return (dps_t)((readRegister8(L3G4200D_CTRL_REG4) >> 4) & 0x03);
 }
 
 
+// Get current output data range and bandwidth
 odrbw_t L3G4200D::getOdrBw(void)
 {
     return (odrbw_t)((readRegister8(L3G4200D_CTRL_REG1) >> 4) & 0x0F);
 }
 
+// Calibrate algorithm
 void L3G4200D::calibrate(uint8_t samples)
 {
     // Set calibrate
@@ -143,11 +146,13 @@ void L3G4200D::calibrate(uint8_t samples)
     }
 }
 
+// Get current threshold value
 uint8_t L3G4200D::getThreshold(void)
 {
     return actualThreshold;
 }
 
+// Set treshold value
 void L3G4200D::setThreshold(uint8_t multiple)
 {
     if (multiple > 0)
@@ -174,6 +179,7 @@ void L3G4200D::setThreshold(uint8_t multiple)
     actualThreshold = multiple;
 }
 
+// Write 8-bit to register
 void L3G4200D::writeRegister8(uint8_t reg, uint8_t value)
 {
     Wire.beginTransmission(L3G4200D_ADDRESS);
@@ -187,6 +193,7 @@ void L3G4200D::writeRegister8(uint8_t reg, uint8_t value)
     Wire.endTransmission();
 }
 
+// Fast read 8-bit from register
 uint8_t L3G4200D::fastRegister8(uint8_t reg)
 {
     uint8_t value;
@@ -211,6 +218,7 @@ uint8_t L3G4200D::fastRegister8(uint8_t reg)
     return value;
 }
 
+// Read 8-bit from register
 uint8_t L3G4200D::readRegister8(uint8_t reg)
 {
     uint8_t value;
@@ -247,6 +255,7 @@ uint8_t L3G4200D::readTemperature(void)
     return readRegister8(L3G4200D_OUT_TEMP);
 }
 
+// Read raw values
 Vector L3G4200D::readRaw()
 {
     Wire.beginTransmission(L3G4200D_ADDRESS);
@@ -283,6 +292,7 @@ Vector L3G4200D::readRaw()
     return r;
 }
 
+// Read normalized values
 Vector L3G4200D::readNormalize()
 {
     readRaw();
