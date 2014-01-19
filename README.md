@@ -1,7 +1,7 @@
 Arduino-L3G4200D
 ================
 
-http://www.jarzebski.pl/github/L3G4200D_processing.jpg
+L3G4200D Triple Axis Gyroscope Arduino Library.
 
 ![L3G4200D Processing](http://www.jarzebski.pl/github/L3G4200D_processing.jpg "L3G4200D Processing")
 

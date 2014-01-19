@@ -27,8 +27,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "WProgram.h"
 #endif
 
-#include <Arduino.h>
-
 #define L3G4200D_ADDRESS       (0xD2 >> 1)
 
 #define L3G4200D_WHO_AM_I      (0x0F)
