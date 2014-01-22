@@ -96,7 +96,7 @@ typedef enum
 class L3G4200D
 {
     public:
-	boolean begin(dps_t scale = L3G4200D_2000DPS, odrbw_t odrbw = L3G4200D_100HZ_12_5);
+	bool begin(dps_t scale = L3G4200D_2000DPS, odrbw_t odrbw = L3G4200D_100HZ_12_5);
 	dps_t getScale(void);
 	odrbw_t getOdrBw(void);
 
@@ -114,7 +114,7 @@ class L3G4200D
 	Vector d;
 	Vector t;
 
-	boolean useCalibrate;
+	bool useCalibrate;
 	float actualThreshold;
 	float dpsPerDigit;
 	float thresholdX;

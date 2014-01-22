@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <L3G4200D.h>
 
-boolean L3G4200D::begin(dps_t scale, odrbw_t odrbw)
+bool L3G4200D::begin(dps_t scale, odrbw_t odrbw)
 {
     // Reset calibrate values
     d.XAxis = 0;

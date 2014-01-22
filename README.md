@@ -9,5 +9,5 @@ Tutorials: http://www.jarzebski.pl/arduino/czujniki-i-sensory/3-osiowy-zyroskop-
 
 YouTube: http://youtu.be/8llVF22r9yA
 
-These library use I2C to communicate, 2 pins are required to interface
+This library use I2C to communicate, 2 pins are required to interface
 
