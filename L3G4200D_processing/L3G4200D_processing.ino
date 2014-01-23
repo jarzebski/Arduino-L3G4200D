@@ -29,7 +29,7 @@ void setup()
 
   // Initialize L3G4200D
   // Set scale 2000 dps and 400HZ Output data rate (cut-off 50)
-  while (!gyroscope.begin(L3G4200D_2000DPS, L3G4200D_400HZ_50))
+  while (!gyroscope.begin(L3G4200D_SCALE_2000DPS, L3G4200D_DATARATE_400HZ_50))
   {
     // Waiting for initialization
 

@@ -18,29 +18,28 @@ void setup()
   // Initialize L3G4200D(dps, odrbw)
 
   // dps:
-  // L3G4200D_250DPS:   200 dps
-  // L3G4200D_500DPS:   500 dps
-  // L3G4200D_2000DPS: 2000 dps (default)
+  // L3G4200D_SCALE_250DPS:   200 dps
+  // L3G4200D_SCALE_500DPS:   500 dps
+  // L3G4200D_SCALE_2000DPS: 2000 dps (default)
 
   // odrbw:
-  // L3G4200D_800HZ_110:  Output Data Rate 800HZ, Cut-off 110
-  // L3G4200D_800HZ_50:   Output Data Rate 800HZ, Cut-off 50
-  // L3G4200D_800HZ_35:   Output Data Rate 800HZ, Cut-off 35
-  // L3G4200D_800HZ_30:   Output Data Rate 800HZ, Cut-off 30
-  // L3G4200D_400HZ_110:  Output Data Rate 400HZ, Cut-off 110
-  // L3G4200D_400HZ_50:   Output Data Rate 400HZ, Cut-off 50
-  // L3G4200D_400HZ_25:   Output Data Rate 400HZ, Cut-off 25
-  // L3G4200D_400HZ_20:   Output Data Rate 400HZ, Cut-off 20
-  // L3G4200D_200HZ_70:   Output Data Rate 200HZ, Cut-off 70
-  // L3G4200D_200HZ_50:   Output Data Rate 200HZ, Cut-off 50
-  // L3G4200D_200HZ_25:   Output Data Rate 200HZ, Cut-off 25
-  // L3G4200D_200HZ_12_5: Output Data Rate 200HZ, Cut-off 12.5
-  // L3G4200D_100HZ_25:   Output Data Rate 100HZ, Cut-off 25
-  // L3G4200D_100HZ_12_5: Output Data Rate 100HZ, Cut-off 12.5 (default)
+  // L3G4200D_DATARATE_800HZ_50:   Output Data Rate 800HZ, Cut-off 50
+  // L3G4200D_DATARATE_800HZ_35:   Output Data Rate 800HZ, Cut-off 35
+  // L3G4200D_DATARATE_800HZ_30:   Output Data Rate 800HZ, Cut-off 30
+  // L3G4200D_DATARATE_400HZ_110:  Output Data Rate 400HZ, Cut-off 110
+  // L3G4200D_DATARATE_400HZ_50:   Output Data Rate 400HZ, Cut-off 50
+  // L3G4200D_DATARATE_400HZ_25:   Output Data Rate 400HZ, Cut-off 25
+  // L3G4200D_DATARATE_400HZ_20:   Output Data Rate 400HZ, Cut-off 20
+  // L3G4200D_DATARATE_200HZ_70:   Output Data Rate 200HZ, Cut-off 70
+  // L3G4200D_DATARATE_200HZ_50:   Output Data Rate 200HZ, Cut-off 50
+  // L3G4200D_DATARATE_200HZ_25:   Output Data Rate 200HZ, Cut-off 25
+  // L3G4200D_DATARATE_200HZ_12_5: Output Data Rate 200HZ, Cut-off 12.5
+  // L3G4200D_DATARATE_100HZ_25:   Output Data Rate 100HZ, Cut-off 25
+  // L3G4200D_DATARATE_100HZ_12_5: Output Data Rate 100HZ, Cut-off 12.5 (default)
 
   Serial.println("Initialize L3G4200D");
 
-  while(!gyroscope.begin(L3G4200D_2000DPS, L3G4200D_400HZ_50))
+  while(!gyroscope.begin(L3G4200D_SCALE_2000DPS, L3G4200D_DATARATE_400HZ_50))
   {
     Serial.println("Could not find a valid L3G4200D sensor, check wiring!");
     delay(500);
@@ -51,13 +50,13 @@ void setup()
 
   switch(gyroscope.getScale())
   {
-    case L3G4200D_250DPS:
+    case L3G4200D_SCALE_250DPS:
       Serial.println("250 dps");
       break;
-    case L3G4200D_500DPS:
+    case L3G4200D_SCALE_500DPS:
       Serial.println("500 dps");
       break;
-    case L3G4200D_2000DPS:
+    case L3G4200D_SCALE_2000DPS:
       Serial.println("2000 dps");
       break;
     default:
@@ -70,46 +69,46 @@ void setup()
 
   switch(gyroscope.getOdrBw())
   {
-    case L3G4200D_800HZ_110:
+    case L3G4200D_DATARATE_800HZ_110:
       Serial.println("800HZ, Cut-off 110");
       break;
-    case L3G4200D_800HZ_50:
+    case L3G4200D_DATARATE_800HZ_50:
       Serial.println("800HZ, Cut-off 50");
       break;
-    case L3G4200D_800HZ_35:
+    case L3G4200D_DATARATE_800HZ_35:
       Serial.println("800HZ, Cut-off 35");
       break;
-    case L3G4200D_800HZ_30:
+    case L3G4200D_DATARATE_800HZ_30:
       Serial.println("800HZ, Cut-off 30");
       break;
-    case L3G4200D_400HZ_110:
+    case L3G4200D_DATARATE_400HZ_110:
       Serial.println("400HZ, Cut-off 110");
       break;
-    case L3G4200D_400HZ_50:
+    case L3G4200D_DATARATE_400HZ_50:
       Serial.println("400HZ, Cut-off 50");
       break;
-    case L3G4200D_400HZ_25:
+    case L3G4200D_DATARATE_400HZ_25:
       Serial.println("400HZ, Cut-off 25");
       break;
-    case L3G4200D_400HZ_20:
+    case L3G4200D_DATARATE_400HZ_20:
       Serial.println("400HZ, Cut-off 20");
       break;
-    case L3G4200D_200HZ_70:
+    case L3G4200D_DATARATE_200HZ_70:
       Serial.println("200HZ, Cut-off 70");
       break;
-    case L3G4200D_200HZ_50:
+    case L3G4200D_DATARATE_200HZ_50:
       Serial.println("200HZ, Cut-off 50");
       break;
-    case L3G4200D_200HZ_25:
+    case L3G4200D_DATARATE_200HZ_25:
       Serial.println("200HZ, Cut-off 25");
       break;
-    case L3G4200D_200HZ_12_5:
+    case L3G4200D_DATARATE_200HZ_12_5:
       Serial.println("200HZ, Cut-off 12.5");
       break;
-    case L3G4200D_100HZ_25:
+    case L3G4200D_DATARATE_100HZ_25:
       Serial.println("100HZ, Cut-off 25");
       break;
-    case L3G4200D_100HZ_12_5:
+    case L3G4200D_DATARATE_100HZ_12_5:
       Serial.println("100HZ, Cut-off 12.5");
       break;
     default:
