@@ -1,3 +1,11 @@
+L3G4200D Arduino Library 1.3.1 / 24.01.2014
+======================================================================
+
+ * Normalize enmum values L3G4200D_DATARATE_* and L3G4200D_SCALE_*
+ * Normalize register names L3G4200D_REG_*
+ * Change lowpass filter value for slow output examples
+ * Colorize charts series names in processing
+
 L3G4200D Arduino Library 1.3.0 / 12.01.2014
 ======================================================================
 

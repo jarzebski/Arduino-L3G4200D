@@ -1,7 +1,7 @@
 /*
 L3G4200D.cpp - Class file for the L3G4200D Triple Axis Gyroscope Arduino Library.
 
-Version: 1.3.0
+Version: 1.3.1
 (c) 2014 Korneliusz Jarzebski
 www.jarzebski.pl
 
@@ -68,13 +68,13 @@ bool L3G4200D::begin(dps_t scale, odrbw_t odrbw)
 
     switch(scale)
     {
-	case L3G4200D_250DPS:
+	case L3G4200D_SCALE_250DPS:
 	    dpsPerDigit = .00875f;
 	    break;
-	case L3G4200D_500DPS:
+	case L3G4200D_SCALE_500DPS:
 	    dpsPerDigit = .0175f;
 	    break;
-	case L3G4200D_2000DPS:
+	case L3G4200D_SCALE_2000DPS:
 	    dpsPerDigit = .07f;
 	    break;
 	default:
