@@ -46,7 +46,7 @@ bool L3G4200D::begin(dps_t scale, odrbw_t odrbw)
     Wire.begin();
 
     // Check L3G4200D Who Am I Register
-    if (fastRegister8(L3G4200D_WHO_AM_I) != 0xD3)
+    if (fastRegister8(L3G4200D_REG_WHO_AM_I) != 0xD3)
     {
 	return false;
     }
@@ -55,16 +55,16 @@ bool L3G4200D::begin(dps_t scale, odrbw_t odrbw)
     uint8_t reg1 = 0x00;
     reg1 |= 0x0F; // Enable all axis and setup normal mode
     reg1 |= (odrbw << 4); // Set output data rate & bandwidh
-    writeRegister8(L3G4200D_CTRL_REG1, reg1);
+    writeRegister8(L3G4200D_REG_CTRL_REG1, reg1);
 
     // Disable high pass filter
-    writeRegister8(L3G4200D_CTRL_REG2, 0x00);
+    writeRegister8(L3G4200D_REG_CTRL_REG2, 0x00);
 
     // Generata data ready interrupt on INT2
-    writeRegister8(L3G4200D_CTRL_REG3, 0x08);
+    writeRegister8(L3G4200D_REG_CTRL_REG3, 0x08);
 
     // Set full scale selection in continous mode
-    writeRegister8(L3G4200D_CTRL_REG4, scale << 4);
+    writeRegister8(L3G4200D_REG_CTRL_REG4, scale << 4);
 
     switch(scale)
     {
@@ -82,7 +82,7 @@ bool L3G4200D::begin(dps_t scale, odrbw_t odrbw)
     }
 
     // Boot in normal mode, disable FIFO, HPF disabled
-    writeRegister8(L3G4200D_CTRL_REG5, 0x00);
+    writeRegister8(L3G4200D_REG_CTRL_REG5, 0x00);
 
     return true;
 }
@@ -90,14 +90,14 @@ bool L3G4200D::begin(dps_t scale, odrbw_t odrbw)
 // Get current scale
 dps_t L3G4200D::getScale(void)
 {
-    return (dps_t)((readRegister8(L3G4200D_CTRL_REG4) >> 4) & 0x03);
+    return (dps_t)((readRegister8(L3G4200D_REG_CTRL_REG4) >> 4) & 0x03);
 }
 
 
 // Get current output data range and bandwidth
 odrbw_t L3G4200D::getOdrBw(void)
 {
-    return (odrbw_t)((readRegister8(L3G4200D_CTRL_REG1) >> 4) & 0x0F);
+    return (odrbw_t)((readRegister8(L3G4200D_REG_CTRL_REG1) >> 4) & 0x0F);
 }
 
 // Calibrate algorithm
@@ -252,7 +252,7 @@ uint8_t L3G4200D::readRegister8(uint8_t reg)
 // Finally, you can use this info to compensate drifts due to temperature changes.
 uint8_t L3G4200D::readTemperature(void)
 {
-    return readRegister8(L3G4200D_OUT_TEMP);
+    return readRegister8(L3G4200D_REG_OUT_TEMP);
 }
 
 // Read raw values
@@ -260,9 +260,9 @@ Vector L3G4200D::readRaw()
 {
     Wire.beginTransmission(L3G4200D_ADDRESS);
     #if ARDUINO >= 100
-	Wire.write(L3G4200D_OUT_X_L | (1 << 7)); 
+	Wire.write(L3G4200D_REG_OUT_X_L | (1 << 7)); 
     #else
-	Wire.send(L3G4200D_OUT_X_L | (1 << 7)); 
+	Wire.send(L3G4200D_REG_OUT_X_L | (1 << 7)); 
     #endif
     Wire.endTransmission();
     Wire.requestFrom(L3G4200D_ADDRESS, 6);
