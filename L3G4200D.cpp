@@ -1,7 +1,7 @@
 /*
 L3G4200D.cpp - Class file for the L3G4200D Triple Axis Gyroscope Arduino Library.
 
-Version: 1.3.1
+Version: 1.3.2
 (c) 2014 Korneliusz Jarzebski
 www.jarzebski.pl
 
@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <L3G4200D.h>
 
-bool L3G4200D::begin(dps_t scale, odrbw_t odrbw)
+bool L3G4200D::begin(l3g4200d_dps_t scale, l3g4200d_odrbw_t odrbw)
 {
     // Reset calibrate values
     d.XAxis = 0;
@@ -88,16 +88,16 @@ bool L3G4200D::begin(dps_t scale, odrbw_t odrbw)
 }
 
 // Get current scale
-dps_t L3G4200D::getScale(void)
+l3g4200d_dps_t L3G4200D::getScale(void)
 {
-    return (dps_t)((readRegister8(L3G4200D_REG_CTRL_REG4) >> 4) & 0x03);
+    return (l3g4200d_dps_t)((readRegister8(L3G4200D_REG_CTRL_REG4) >> 4) & 0x03);
 }
 
 
 // Get current output data range and bandwidth
-odrbw_t L3G4200D::getOdrBw(void)
+l3g4200d_odrbw_t L3G4200D::getOdrBw(void)
 {
-    return (odrbw_t)((readRegister8(L3G4200D_REG_CTRL_REG1) >> 4) & 0x0F);
+    return (l3g4200d_odrbw_t)((readRegister8(L3G4200D_REG_CTRL_REG1) >> 4) & 0x0F);
 }
 
 // Calibrate algorithm

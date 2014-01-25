@@ -1,7 +1,7 @@
 /*
 L3G4200D.h - Header file for the L3G4200D Triple Axis Gyroscope Arduino Library.
 
-Version: 1.3.1
+Version: 1.3.2
 (c) 2014 Korneliusz Jarzebski
 www.jarzebski.pl
 
@@ -60,19 +60,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define L3G4200D_REG_INT1_THS_ZL   (0x37)
 #define L3G4200D_REG_INT1_DURATION (0x38)
 
+#ifndef VECTOR_STRUCT_H
+#define VECTOR_STRUCT_H
 struct Vector
 {
     float XAxis;
     float YAxis;
     float ZAxis;
 };
+#endif
 
 typedef enum
 {
     L3G4200D_SCALE_2000DPS = 0b10,
     L3G4200D_SCALE_500DPS  = 0b01,
     L3G4200D_SCALE_250DPS  = 0b00
-} dps_t;
+} l3g4200d_dps_t;
 
 typedef enum
 {
@@ -90,14 +93,14 @@ typedef enum
     L3G4200D_DATARATE_200HZ_12_5 = 0b0100,
     L3G4200D_DATARATE_100HZ_25   = 0b0001,
     L3G4200D_DATARATE_100HZ_12_5 = 0b0000
-} odrbw_t;
+} l3g4200d_odrbw_t;
 
 class L3G4200D
 {
     public:
-	bool begin(dps_t scale = L3G4200D_SCALE_2000DPS, odrbw_t odrbw = L3G4200D_DATARATE_100HZ_12_5);
-	dps_t getScale(void);
-	odrbw_t getOdrBw(void);
+	bool begin(l3g4200d_dps_t scale = L3G4200D_SCALE_2000DPS, l3g4200d_odrbw_t odrbw = L3G4200D_DATARATE_100HZ_12_5);
+	l3g4200d_dps_t getScale(void);
+	l3g4200d_odrbw_t getOdrBw(void);
 
 	void calibrate(uint8_t samples = 50);
 	void setThreshold(uint8_t multiple = 1);
