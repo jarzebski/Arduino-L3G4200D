@@ -57,10 +57,59 @@ void setup()
   myPort.bufferUntil(10);
 }
 
-void drawChart(String title, String[] series, float[][] chart, int x, int y, int h, int min, int max, int step)
+void drawChart(String title, String[] series, float[][] chart, int x, int y, int h, boolean symmetric, boolean fixed, int fixedMin, int fixedMax, int hlines) 
 {
   int actualColor = 0;
-
+  
+  int maxA = 0;
+  int maxB = 0;
+  int maxAB = 0;
+  
+  int min = 0;
+  int max = 0;
+  int step = 0;
+  int divide = 0;
+ 
+  if (fixed)
+  {
+    min = fixedMin;
+    max = fixedMax;
+    step = hlines;
+  } else
+  {
+    if (hlines > 2)
+    {
+      divide = (hlines - 2);
+    } else
+    {
+      divide = 1;
+    }
+      
+    if (symmetric)
+    {
+      maxA = (int)abs(getMin(chart));
+      maxB = (int)abs(getMax(chart));
+      maxAB = max(maxA, maxB);
+      step = (maxAB * 2) / divide;
+      min = -maxAB-step;
+      max = maxAB+step;
+    } else
+    {
+      min = (int)(getMin(chart));
+      max = (int)(getMax(chart));
+      
+      if ((max >= 0) && (min <= 0)) step = (abs(min) + abs(max)) / divide; 
+      if ((max < 0) && (min < 0)) step = abs(min - max) / divide; 
+      if ((max > 0) && (min > 0)) step = (max - min) / divide; 
+      
+      if (divide > 1)
+      {
+        min -= step;
+        max += step;
+      }
+    }
+  }
+ 
   pgChart = createGraphics((maxSamples*sampleStep)+50, h+60);
 
   pgChart.beginDraw();
@@ -258,12 +307,66 @@ void drawArtificialHorizon(int x, int y)
   image(pgArtificialHorizonRing, x, y);
 }
 
+float getMin(float[][] chart)
+{
+  float minValue = 0;
+  float[] testValues = new float[chart.length];
+  float testMin = 0;
+
+  for (int i = 0; i < actualSample; i++)
+  {
+    for (int j = 0; j < testValues.length; j++)
+    {
+      testValues[j] = chart[j][i];
+    }
+    
+    testMin = min(testValues);
+    
+    if (i == 0)
+    {
+      minValue = testMin;
+    } else
+    {
+      if (minValue > testMin) minValue = testMin;
+    }
+  }
+ 
+  return ceil(minValue)-1; 
+}
+
+float getMax(float[][] chart)
+{
+  float maxValue = 0;
+  float[] testValues = new float[chart.length];
+  float testMax = 0;
+
+  for (int i = 0; i < actualSample; i++)
+  {
+    for (int j = 0; j < testValues.length; j++)
+    {
+      testValues[j] = chart[j][i];
+    }
+    
+    testMax = max(testValues);
+
+    if (i == 0)
+    {
+      maxValue = testMax;
+    } else
+    {
+      if (maxValue < testMax) maxValue = testMax;
+    }
+  }
+ 
+  return ceil(maxValue); 
+}
+
 void draw()
 {
   if (!hasData) return;
 
-  drawChart("Gyroscope rad/sec", gyroscopeSeries, gyroscopeValues, 10, 10, 200, -10, 10, 5);
-  drawChart("Gyroscope deg", pyrSeries, pyrValues, 10, 280, 200, -180, 180, 30);
+  drawChart("Gyroscope rad/sec", gyroscopeSeries, gyroscopeValues, 10, 10, 200, true, true, -10, 10, 5);
+  drawChart("Gyroscope deg", pyrSeries, pyrValues, 10, 280, 200, true, true, -180, 180, 30);
   drawRotationCube(480, 15);
   drawArtificialHorizon(480, 280);
 }
