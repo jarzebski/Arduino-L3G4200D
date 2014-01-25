@@ -365,8 +365,8 @@ void draw()
 {
   if (!hasData) return;
 
-  drawChart("Gyroscope rad/sec", gyroscopeSeries, gyroscopeValues, 10, 10, 200, true, true, -10, 10, 5);
-  drawChart("Gyroscope deg", pyrSeries, pyrValues, 10, 280, 200, true, true, -180, 180, 30);
+  drawChart("Gyroscope [rad/sec]", gyroscopeSeries, gyroscopeValues, 10, 10, 200, true, true, -10, 10, 5);
+  drawChart("Gyroscope [deg]", pyrSeries, pyrValues, 10, 280, 200, true, true, -180, 180, 30);
   drawRotationCube(480, 15);
   drawArtificialHorizon(480, 280);
 }
