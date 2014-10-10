@@ -1,7 +1,7 @@
 /*
 L3G4200D.cpp - Class file for the L3G4200D Triple Axis Gyroscope Arduino Library.
 
-Version: 1.3.2
+Version: 1.3.3
 (c) 2014 Korneliusz Jarzebski
 www.jarzebski.pl
 
@@ -135,9 +135,9 @@ void L3G4200D::calibrate(uint8_t samples)
     d.ZAxis = sumZ / samples;
 
     // Calculate threshold vectors
-    thresholdX = sqrt((sigmaX / 50) - (d.XAxis * d.XAxis));
-    thresholdY = sqrt((sigmaY / 50) - (d.YAxis * d.YAxis));
-    thresholdZ = sqrt((sigmaZ / 50) - (d.ZAxis * d.ZAxis));
+    thresholdX = sqrt((sigmaX / samples) - (d.XAxis * d.XAxis));
+    thresholdY = sqrt((sigmaY / samples) - (d.YAxis * d.YAxis));
+    thresholdZ = sqrt((sigmaZ / samples) - (d.ZAxis * d.ZAxis));
 
     // If already set threshold, recalculate threshold vectors
     if (actualThreshold > 0)

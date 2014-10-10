@@ -1,7 +1,7 @@
 /*
 L3G4200D.h - Header file for the L3G4200D Triple Axis Gyroscope Arduino Library.
 
-Version: 1.3.2
+Version: 1.3.3
 (c) 2014 Korneliusz Jarzebski
 www.jarzebski.pl
 
